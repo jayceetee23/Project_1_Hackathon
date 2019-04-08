@@ -28,26 +28,35 @@ def extract_text_from_pdf(pdf_path):
         return text
 
 
-if __name__ == '__main__':
-    print(extract_text_from_pdf('test1.pdf'))
+# if __name__ == '__main__':
+#     print(extract_text_from_pdf('test5.pdf'))
 
 # import spacy
 import spacy
 
+from spacy.matcher import PhraseMatcher
+from spacy.matcher import Matcher
+
 # Load English tokenizer, tagger, parser, NER and word vectors
 nlp = spacy.load('en')
 
+# Extracted PDF file to Text
+pdftext = extract_text_from_pdf('test5.pdf')
 
-pdftext = extract_text_from_pdf('test1.pdf')
-
+# Runs extracted text through NLP (Natural Language Processor)
 doc = nlp(pdftext)
 
-print("Noun phrases:", [chunk.text for chunk in doc.noun_chunks])
-print("Verbs:", [token.lemma_ for token in doc if token.pos_ == "VERB"])
+core_patterns = [nlp(text) for text in ('drug', 'overdose')]
+peripheral_patterns = [nlp(text) for text in ('death', 'problem')]
+# material_patterns = [nlp(text) for text in ('silk', 'yellow fabric')] (COULD HAVE ONE FOR NUMBERS?)
 
-# Find named entities, phrases and concepts
-for entity in doc.ents:
-    print(entity.text, entity.label_)
+matcher = PhraseMatcher(nlp.vocab)
+matcher.add('CORE', None, *core_patterns)
+matcher.add('PERIPHERAL', None, *peripheral_patterns)
+# matcher.add('MATERIAL', None, *material_patterns)
 
-for ent in doc.ents:
-    print(ent.text, ent.start_char, ent.end_char, ent.label_)
+matches = matcher(doc)
+for match_id, start, end in matches:
+    rule_id = nlp.vocab.strings[match_id]  # get the unicode ID, i.e. 'COLOR'
+    span = doc[start : end]  # get the matched slice of the doc
+    print(rule_id, span.text)
