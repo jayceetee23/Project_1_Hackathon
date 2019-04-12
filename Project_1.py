@@ -28,35 +28,62 @@ def extract_text_from_pdf(pdf_path):
         return text
 
 
-# if __name__ == '__main__':
-#     print(extract_text_from_pdf('test5.pdf'))
+if __name__ == '__main__':
+    print(extract_text_from_pdf('test5.pdf'))
 
-# import spacy
+# import spacy library
 import spacy
-
-from spacy.matcher import PhraseMatcher
-from spacy.matcher import Matcher
 
 # Load English tokenizer, tagger, parser, NER and word vectors
 nlp = spacy.load('en')
 
-# Extracted PDF file to Text
+
 pdftext = extract_text_from_pdf('test5.pdf')
 
-# Runs extracted text through NLP (Natural Language Processor)
-doc = nlp(pdftext)
-
-core_patterns = [nlp(text) for text in ('drug', 'overdose')]
-peripheral_patterns = [nlp(text) for text in ('death', 'problem')]
-# material_patterns = [nlp(text) for text in ('silk', 'yellow fabric')] (COULD HAVE ONE FOR NUMBERS?)
+# import PhraseMatcher
+from spacy.matcher import PhraseMatcher
 
 matcher = PhraseMatcher(nlp.vocab)
-matcher.add('CORE', None, *core_patterns)
-matcher.add('PERIPHERAL', None, *peripheral_patterns)
-# matcher.add('MATERIAL', None, *material_patterns)
+
+# Phrases (or words) that are a part of the terminology_list
+terminology_list = [u"drug", u"overdose", u"death"]
+
+patterns = [nlp.make_doc(text) for text in terminology_list]
+matcher.add("TerminologyList", None, *patterns)
+
+doc = nlp(pdftext)
 
 matches = matcher(doc)
+
+drug_count = 0
+overdose_count = 0
+death_count = 0
+
+# Counter for number of times a word in the terminology_list matches the pattern in the text document
 for match_id, start, end in matches:
-    rule_id = nlp.vocab.strings[match_id]  # get the unicode ID, i.e. 'COLOR'
-    span = doc[start : end]  # get the matched slice of the doc
-    print(rule_id, span.text)
+    span = doc[start:end]
+    # print(span.text)
+
+    if span.text == "drug":
+        drug_count = drug_count + 1
+    elif span.text == "overdose":
+        overdose_count = overdose_count + 1
+    elif span.text == "death":
+        death_count = death_count + 1
+
+# Print counts for words: 'drug', 'overdose', 'death'
+print("Number of times text 'drug' appears in article: ", drug_count)
+print("Number of times text 'overdose' appears in article: ", overdose_count)
+print("Number of times text 'death' appears in article: ", death_count)
+
+print("\n")
+
+# Tokenization: Print noun phrases that appear in text document
+print("Noun phrases:", [chunk.text for chunk in doc.noun_chunks])
+
+# Tokenization: Print Verbs that appear in text document
+print("Verbs:", [token.lemma_ for token in doc if token.pos_ == "VERB"])
+
+# Separate text into sentences
+for entity in doc.sents:
+    print(entity.text, entity.label_, "\n")
