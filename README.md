@@ -11,6 +11,7 @@ We then import spacy and load the English tokenizer, tagger, parser, NER and wor
 ![word numbers](https://user-images.githubusercontent.com/47049525/56012026-1e11e700-5cb0-11e9-9d78-69204a3ce2af.PNG)
 
 Here we parse through the text document and output noun phrases that appear through the text. We apply the same tokenization with verbs that also appear in the text.
+
 ![Capture](https://user-images.githubusercontent.com/47049525/56012450-2539f480-5cb2-11e9-9596-37fc11b47c2e.PNG)
 ![noun and verb output](https://user-images.githubusercontent.com/47049525/56012021-16ead900-5cb0-11e9-82f3-d9caf190e5f9.PNG)
 
