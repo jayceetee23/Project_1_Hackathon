@@ -1,7 +1,8 @@
 # spaCy Library Demonstration
 
-Code demonstrates some uses with spaCy library. Spacy is a open-source library for Natural Language Processing in Python.
+Code demonstrates some uses with spaCy library. Spacy is a open-source library for Natural Language Processing in Python. The goal is to extract text from a .pdf file to use with the spacy library.
 
+Here we use the library pdf miner in order to extract the text from the .pdf file and convert it into workable text. 
 ![pdfMiner Image](https://user-images.githubusercontent.com/47049525/56011997-f7ec4700-5caf-11e9-92ea-e7290e96bdc4.PNG)
 
 ![spacy1](https://user-images.githubusercontent.com/47049525/56012008-08042680-5cb0-11e9-9a6f-60ed39e8b5de.PNG)
