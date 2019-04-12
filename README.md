@@ -10,6 +10,8 @@ We then import spacy and load the English tokenizer, tagger, parser, NER and wor
 ![code terminology](https://user-images.githubusercontent.com/47049525/56012376-dc823b80-5cb1-11e9-8f70-1ee7464dd7a5.PNG)
 
 
+
+
 ![word numbers](https://user-images.githubusercontent.com/47049525/56012026-1e11e700-5cb0-11e9-9d78-69204a3ce2af.PNG)
 
 ![noun and verb output](https://user-images.githubusercontent.com/47049525/56012021-16ead900-5cb0-11e9-82f3-d9caf190e5f9.PNG)
